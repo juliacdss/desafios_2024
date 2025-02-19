@@ -4,6 +4,7 @@
         { nome: "Carlos", notas: [5, 6, 4] },
         { nome: "Bruna", notas: [9, 9, 10] }
     ];
+
     /*
     1. Criar uma função calcularMedia(nome) que retorna a média de um aluno.
     2. Criar uma função classificarAluno(nome) que retorna "Aprovado", "Recuperação" ou "Reprovado" com base na média.
@@ -11,5 +12,75 @@
     4. Criar um menu interativo para buscar alunos, adicionar notas e verificar médias.
     */
 
-    
+    function calcularMedia(nome) {
+        let aluno = alunos.find(a => a.nome.toLowerCase() === nome.toLowerCase());
+        if (!aluno) {
+            alert("Aluno não encontrado.");
+            return null;
+        }
+        let media = aluno.notas.reduce((acc, nota) => acc + nota, 0) / aluno.notas.length;
+        return media;
+    }
+
+    function classificarAluno(nome) {
+        let media = calcularMedia(nome);
+        if (media === null) return;
+
+        let classificacao = media >= 7 ? "aprovado/a" : media >= 5 ? " de recuperação" : "reprovado/a";
+        alert(`${nome} está ${classificacao} com média ${media.toFixed(2)}.`);
+    }
+
+    function adicionarNota(nome, nota) {
+        let aluno = alunos.find(a => a.nome.toLowerCase() === nome.toLowerCase());
+        if (!aluno) {
+            alert("Aluno não encontrado.");
+            return;
+        }
+        aluno.notas.push(nota);
+        alert(`Nota ${nota} adicionada para ${nome}.`);
+    }
+
+    function menu() {
+        let opcao;
+        while (opcao !== 0) {
+            opcao = Number(prompt(
+                "Escolha uma opção:\n" +
+                "1 - Calcular Média do Aluno\n" +
+                "2 - Classificar Aluno\n" +
+                "3 - Adicionar Nota ao Aluno\n" +
+                "0 - Sair"
+            ));
+
+            switch (opcao) {
+                case 1:
+                    let nomeMedia = prompt("Digite o nome do aluno:");
+                    let media = calcularMedia(nomeMedia);
+                    if (media !== null) {
+                        alert(`Média de ${nomeMedia}: ${media.toFixed(2)}`);
+                    }
+                    break;
+                case 2:
+                    let nomeClassificar = prompt("Digite o nome do aluno:");
+                    classificarAluno(nomeClassificar);
+                    break;
+                case 3:
+                    let nomeNota = prompt("Digite o nome do aluno:");
+                    let novaNota = Number(prompt("Digite a nota a ser adicionada:"));
+                    if (!isNaN(novaNota) && novaNota >= 0 && novaNota <= 10) {
+                        adicionarNota(nomeNota, novaNota);
+                    } else {
+                        alert("Nota inválida! Digite um número entre 0 e 10.");
+                    }
+                    break;
+                case 0:
+                    alert("Saindo do sistema...");
+                    break;
+                default:
+                    alert("Opção inválida! Tente novamente.");
+            }
+        }
+    }
+
+    menu();
+
 </script>
